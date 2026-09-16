@@ -10,16 +10,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
-@RequestMapping ("/api/visitors")
-@RequiredArgsConstructor 
+@RequestMapping("/api/visitors")
+@RequiredArgsConstructor
 public class Controller {
 
     private final com.example.visitor.service.Service service;
 
-    @GetMapping 
+    @GetMapping
     public List<Visitor> getAllVisitors() {
         return service.getAllVisitors();
     }
@@ -29,13 +28,13 @@ public class Controller {
         return service.createVisitor(visitor);
     }
 
-    @PutMapping("/{id}/status")
-    public Visitor updateVisitorStatus(@PathVariable Long id, @RequestParam String status) {
+    @PutMapping("/{id}/status/{status}")
+    public Visitor updateVisitorStatus(@PathVariable Long id, @PathVariable String status) {
         return service.updateVisitorStatus(id, status);
     }
 
-    @GetMapping("/pending")
-    public List<Visitor> getPendingVisitorsForManager(@RequestParam String reportingManager) {
+    @GetMapping("/pending/{reportingManager}")
+    public List<Visitor> getPendingVisitorsForManager(@PathVariable String reportingManager) {
         return service.getPendingVisitorsForManager(reportingManager);
     }
 
@@ -49,14 +48,15 @@ public class Controller {
         return service.getAllRejectedVisitors();
     }
 
+    // no time param needed - the server clock sets it, so a visitor can't be checked in/out at a forged time
     @PutMapping("/{id}/check-in")
-    public Visitor checkInVisitor(@PathVariable Long id, @RequestParam String checkInTime) {
-        return service.checkInVisitor(id, checkInTime);
+    public Visitor checkInVisitor(@PathVariable Long id) {
+        return service.checkInVisitor(id);
     }
 
     @PutMapping("/{id}/check-out")
-    public Visitor checkOutVisitor(@PathVariable Long id, @RequestParam String checkOutTime) {
-        return service.checkOutVisitor(id, checkOutTime);
+    public Visitor checkOutVisitor(@PathVariable Long id) {
+        return service.checkOutVisitor(id);
     }
 
     //time spend by visitor
