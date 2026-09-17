@@ -48,7 +48,6 @@ public class Controller {
         return service.getAllRejectedVisitors();
     }
 
-    // no time param needed - the server clock sets it, so a visitor can't be checked in/out at a forged time
     @PutMapping("/{id}/check-in")
     public Visitor checkInVisitor(@PathVariable Long id) {
         return service.checkInVisitor(id);
